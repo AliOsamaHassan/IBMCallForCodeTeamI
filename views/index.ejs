@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Omar Ihab Hamed Handouk & Ahmed Abd-Elaziz">
+    <meta name="description" content="IBM Cloud Cloudant Service Integration via NodeJS">
+    <meta name="keywords" content="Cloud, IBM, Call for Code">
+    <link href='../public/style.css' rel='stylesheet' type='text/css'>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Cloudant Integration</title>
+</head>
+
+<body>
+    <div class="container">
+        <fieldset>
+            <form action="/" method="post">
+                <input name="Country" type="text" class="" placeholder="Enter Country" required>
+                <input name="City" type="text" class="ghost-input" placeholder="Enter a City" required>
+                <input name="Longitude" type="text" class="" placeholder="Enter Longitude">
+                <input name="Latitude" type="text" class="" placeholder="Enter Latitude">
+                <input name="Disaster" type="text" class="" placeholder="Enter Disaster Type" required>
+                <input type="submit" class="ghost-button" value="Report Incident">
+            </form>
+
+            <% if(docID !== null){ %>
+            <p>
+                <%= docID %>
+            </p>
+            <% } %>
+
+            <% if(error !== null){ %>
+            <p>
+                <%= error %>
+            </p>
+            <% } %>
+        </fieldset>
+    </div>
+</body>
+
+</html>
