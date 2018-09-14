@@ -13,13 +13,13 @@
   "author": "Ahmed Abd-Elaziz, Ramadan Nasr, Hossam Mohamed, Hussien Abd-Elaal & Omar Handouk",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.18.3",
-    "ejs": "^2.6.1",
-    "express": "^4.16.3",
-    "npm": ">=6.x.x",
-    "request": "^2.88.0",
-    "jshint": "^2.9.6",
-    "date-and-time": "^0.6.2"
+    "body-parser": "~1.18.3",
+    "ejs": "~2.6.1",
+    "express": "~4.16.3",
+    "npm": "~6.x.x",
+    "request": "~2.88.0",
+    "jshint": "~2.9.6",
+    "date-and-time": "~0.6.2"
   },
   "bugs": {
     "url": "https://github.com/ansgohar/IBMCallForCodeTeamI/issues"
