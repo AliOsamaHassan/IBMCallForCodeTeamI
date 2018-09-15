@@ -2,27 +2,28 @@
     box-sizing: border-box;
 }
 
-#result{
-    padding: 12px 12px 12px 12px ;
+#result {
+    padding: 12px 12px 12px 12px;
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
     border-top: 10px;
 }
 
-h1{
+h1 {
     font-size: 50px;
 }
 
-#paragraph{
+#paragraph {
     font-size: 1.5em;
 }
 
-h1, p{
+h1,
+p {
     align-content: center;
     align-items: center;
     text-align: center;
     font-family: Arial, Helvetica, sans-serif;
-    
+
 }
 
 label {
@@ -30,9 +31,11 @@ label {
     font-size: 20px;
     font-family: Arial, Helvetica, sans-serif;
 }
- 
 
-input[type=text], select, textarea {
+
+input[type=text],
+select,
+textarea {
     width: 100%;
     padding: 12px;
     border: 1px solid rgb(204, 204, 204);
@@ -53,8 +56,8 @@ input[type=submit] {
 }
 
 input[type=submit]:hover {
-    background-color:white;
-    color:  #4CAF50;
+    background-color: white;
+    color: #4CAF50;
 }
 
 .container {
