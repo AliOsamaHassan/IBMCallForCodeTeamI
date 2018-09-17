@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include partials/head %>
+</head>
+<!-- TODO: Add styling and format document well-->
+<body>
+    <form action="/inquire" method="get">
+        <input type="text" name="reportID" placeholder="Enter Report ID" required>
+        <input type="submit" value="Inquiry Request">
+    </form>
+    
+    <% if(ID != null){ %>
+    <p>Country:
+        <%= Country %>
+    </p>
+    <p>City:
+        <%= City %>
+    </p>
+    <p>Longitude:
+        <%= Longitude %>
+    </p>
+    <p>Latitude:
+        <%= Latitude %>
+    </p>
+    <p>Disaster:
+        <%= Disaster %>
+    </p>
+    <p>ID:
+        <%= ID %>
+    </p>
+    <% } %>
+    <% if(error != null){ %>
+    <p>Error:
+        <%= error %>
+    </p>
+    <% } %>
+</body>
+
+</html>

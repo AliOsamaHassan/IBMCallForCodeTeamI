@@ -1,84 +1,49 @@
-/*
-    Authors: Ahmed Abd-Elaziz - Omar Handouk
-*/
+'use strict';
 
 //Modules
-// TODO: Add LOGS
 const express = require('express');
 const bodyParser = require('body-parser');
-const request = require('request');
-const date = require('date-and-time');
+const path = require('path'); // eslint-disable-line no-use-before-define
+
+//Routes declarations
+const ROUTERS = require('./routes/routesHandlers');
 
 const app = express();
 
-//Credentials
-// FIXME: Remove Credentials for Security Reasons
-const username = "570e514c-ebc2-4f16-9e48-4b5482344cc1-bluemix";
-const password = "df981ac29aaee79b179589d343431f978654467d9146bff882bd5c43d61b0304";
+//View Engine Setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
+//Path for static files
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(express.static('public')); //Must be included to enable the usage of static files like: Images, CSS files, ...etc
+//Parser for Requests
 app.use(bodyParser.urlencoded({
-    extended: true
-})); //Parser for Request
+    extended: false
+}));
+app.use(bodyParser.json());
 
-app.set('view engine', 'ejs'); 
+//Routes
+app.use('/', ROUTERS);
 
-// TODO: Add Documents GET Request
-
-app.get('/', function (req, res) { 
-    res.render('index', {
-        docID: null,
-        error: null
-    });
+//Catch 404 and forward error to handler
+app.use((request, response, next) => {
+    let error = new Error('Not Found');
+    error.status = 404;
+    next(error);
 });
 
-app.post('/', function (req, res) {
-
-    var doc = req.body;
-
-    let now = new Date();
-    let currDate = date.format(now, 'YYYY/MM/DD');
-    let currTime = date.format(now, 'hh:mm A [GMT]Z');
-
-    doc.Date = currDate;
-    doc.Time = currTime;
-    
-    var options = {
-        method: 'POST',
-        url: `https://${username}:${password}@570e514c-ebc2-4f16-9e48-4b5482344cc1-bluemix.cloudant.com/test`,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        json: doc //Dah HABD Certified, matle3sh HABD
-    };
-
-    request(options, function (err, response, body) {
-        if (err) {
-            res.render('index', {
-                docID: null,
-                error: 'Error: ' + err 
-            });
-        } else {
-
-            let status = body; //HTML FORM JSON OBJECT
-            
-            if (status.ok == 'error') {
-                res.render('index', {
-                    docID: null,
-                    error: 'Error: ' + err
-                });
-            } else {
-                let statusCode = `Request Status: ${status.ok}, Request ID: ${status.id}`;
-                res.render('index', {
-                    docID: statusCode,
-                    error: null
-                });
-            }
-        }
+//Error Handler
+app.use((error, request, response, next) => { // eslint-disable-line
+    response.status(error.status || 500);
+    response.render('error', {
+        status: error.status,
+        message: error.message
     });
 });
 
 app.listen(3000, function () {
-    console.log('Survival Network Listening to PORT 3000');
+    console.log('Survival Network Listening to PORT 3000'); // eslint-disable-line
 });
+
+module.exports = app;

@@ -2,83 +2,11 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="author" content="Omar Ihab Hamed Handouk & Ahmed Abd-Elaziz">
-    <meta name="description" content="IBM Cloud Cloudant Service Integration via NodeJS">
-    <meta name="keywords" content="Cloud, IBM, Call for Code">
-    <link href='/style.css' rel='stylesheet' type='text/css'>
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Cloudant Integration</title>
+    <% include partials/head %>
 </head>
 
 <body>
-
-    <h1>Survival Network</h1>
-    <p id="paragragh">Please report any kind of disaster you see here.</p>
-
-    <div class="container">
-        <fieldset>
-            <form action="/" method="post">
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Country</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Country" type="text" class="country" placeholder="Enter Country" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">City</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="City" type="text" class="city" placeholder="Enter a City" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Longitude</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Longitude" type="text" class="longitude" placeholder="Enter Longitude">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Latitude</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Latitude" type="text" class="latitude" placeholder="Enter Latitude">
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Disaster</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Disaster" type="text" class="disaster" placeholder="Enter Disaster Type" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <input type="submit" class="submit" value="Report Incident">
-                </div>
-            </form>
-
-            <% if(docID !== null){ %>
-            <p id="result">
-                <%= docID %>
-            </p>
-            <% } %>
-
-            <% if(error !== null){ %>
-            <p>
-                <%= error %>
-            </p>
-            <% } %>
-        </fieldset>
-        <p>&copy; 2018 Survival Network <p></p>
-    </div>
+    <h1>Hello, Index</h1>
 </body>
 
 </html>

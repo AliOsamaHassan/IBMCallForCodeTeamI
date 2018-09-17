@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include partials/head %>
+</head>
+
+<body>
+    <h1>Survival Network</h1>
+    <p id="paragragh">Incident Report</p>
+
+    <div class="container">
+        <fieldset>
+            <form action="/report" method="post">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Country</label>
+                    </div>
+                    <div class="col-75">
+                        <input name="Country" type="text" class="country" placeholder="Enter Country" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">City</label>
+                    </div>
+                    <div class="col-75">
+                        <input name="City" type="text" class="city" placeholder="Enter a City" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Longitude</label>
+                    </div>
+                    <div class="col-75">
+                        <input name="Longitude" type="text" class="longitude" placeholder="Enter Longitude">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Latitude</label>
+                    </div>
+                    <div class="col-75">
+                        <input name="Latitude" type="text" class="latitude" placeholder="Enter Latitude">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Disaster</label>
+                    </div>
+                    <div class="col-75">
+                        <input name="Disaster" type="text" class="disaster" placeholder="Enter Disaster Type" required>
+                    </div>
+                </div>
+                <div class="row">
+                    <input type="submit" class="submit" value="Report Incident">
+                </div>
+            </form>
+        </fieldset>
+
+        <% if(requestID !== null){ %>
+        <p id="result"> Status: 
+            <span style="color: green"><%= requestStatus %></span>
+        </p>
+        <p> Report ID: 
+            <span style="color: slateblue"><%= requestID %></span>
+        </p>
+        <% } %>
+
+        <% if(error !== null){ %>
+        <p>
+            <%= error %>
+        </p>
+        <% } %>
+
+        <p>&copy; 2018 Survival Network <p></p>
+    </div>
+</body>
+
+</html>
