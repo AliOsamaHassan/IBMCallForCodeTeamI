@@ -4,6 +4,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path'); // eslint-disable-line no-use-before-define
+const methodOverride = require('method-override');
 
 //Routes declarations
 const ROUTERS = require('./routes/routesHandlers');
@@ -22,6 +23,9 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+
+//Method Override for Standard HTTP Requests-- IMPORTANT: philipm.at/2017/method-override_in_expressjs.html
+app.use(methodOverride('_method')); // eslint-disable-line
 
 //Routes
 app.use('/', ROUTERS);

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include partials/head %>
+</head>
+
+<body>
+    <form action="/update?_method=PUT" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <input type="text" name="reportID" placeholder="Enter Report ID" required>
+        <input type="text" name="Country" placeholder="Update Country" required>
+        <input type="text" name="City" placeholder="Update City" required>
+        <input type="text" name="Longitude" placeholder="Update Longitude">
+        <input type="text" name="Latitude" placeholder="Update Latitude">
+        <input type="text" name="Disaster" placeholder="Update Disaster" required>
+        <input type="text" name="Status" placeholder="Update Incident State" required>
+        <!-- TODO: Add more Options & Handle Fields that should not change like Country-->
+        <input type="submit" value="Submit Update">
+    </form>
+
+    <% if(OK != null){ %>
+    <p>Status:
+        <%= OK %>
+    </p>
+    <p>ID:
+        <%= ID %>
+    </p>
+    <p>Revision:
+        <%= Revision %>
+    </p>
+    <% } %>
+    <% if(Error != null){ %>
+    <p>Error:
+        <%= Error %>
+    </p>
+    <% } %>
+</body>
+
+</html>
