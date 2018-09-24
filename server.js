@@ -7,7 +7,7 @@ const path = require('path'); // eslint-disable-line no-use-before-define
 const methodOverride = require('method-override');
 
 //Routes declarations
-const ROUTERS = require('./routes/routesHandlers');
+const ROUTERS = require('./routes/routers');
 
 const app = express();
 
