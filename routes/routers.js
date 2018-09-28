@@ -459,24 +459,24 @@ ROUTER.delete('/remove', (req, response, next) => { // eslint-disable-line
 //<------------------------------->
 
 //<---------Send Supplies--------->
-ROUTER.get('/send', (req, response, next) => {
+ROUTER.get('/send', (req, response, next) => { // eslint-disable-line
     response.render('send', {
-        Directory: "Send Supplies",
+        Directory: "Send Supplies", // eslint-disable-line
         Status: null,
         Error: null
     });
 });
 
-ROUTER.post('/send', (req, response, next) => {
+ROUTER.post('/send', (req, response, next) => { // eslint-disable-line
     LOGGER.log('HERE');
     let form = req.body;
     let Transaction = {
-        "$class": "net.biz.disasterSampleNetwork.SendSupply",
-        "supply": form.supply,
-        "receiver": form.receiver,
-        "deviceId": form.deviceId,
-        "route": form.route,
-        "amount": form.amount,
+        "$class": "net.biz.disasterSampleNetwork.SendSupply", // eslint-disable-line
+        "supply": form.supply, // eslint-disable-line
+        "receiver": form.receiver, // eslint-disable-line
+        "deviceId": form.deviceId, // eslint-disable-line
+        "route": form.route, // eslint-disable-line
+        "amount": form.amount, // eslint-disable-line
     };
 
     let Blockchain = {
@@ -493,7 +493,7 @@ ROUTER.post('/send', (req, response, next) => {
 
         if (error) {
             response.render('send', {
-                Directory: "Send Supplies",
+                Directory: "Send Supplies", // eslint-disable-line
                 Status: null,
                 Error: error
             });
@@ -502,7 +502,7 @@ ROUTER.post('/send', (req, response, next) => {
 
             if (error || status.error) {
                 response.render('send', {
-                    Directory: "Send Supplies",
+                    Directory: "Send Supplies", // eslint-disable-line
                     Status: null,
                     Error: JSON.stringify(status.error)
                 });
@@ -520,6 +520,66 @@ ROUTER.post('/send', (req, response, next) => {
 //<------------------------------->
 
 //<---------Receive Supplies--------->
+ROUTER.get('/receive', (req, response, next) => { // eslint-disable-line
+    response.render('receive', {
+        Directory: "Verify Receival", // eslint-disable-line
+        Status: null,
+        Error: null
+    });
+});
 
+ROUTER.post('/receive', (req, response, next) => { // eslint-disable-line
+
+    let form = req.body;
+
+    let Transaction = {
+        "$class": "net.biz.disasterSampleNetwork.SupplyReceived", // eslint-disable-line
+        "receiver": form.receiver, // eslint-disable-line
+        "supply": form.supply, // eslint-disable-line
+        "disaster": form.disaster // eslint-disable-line
+    };
+
+    let Blockchain = {
+        uri: 'https://disaster-rest-forgiving-hippopotamus.eu-gb.mybluemix.net/api/SupplyReceived', // eslint-disable-line
+        method: 'POST', // eslint-disable-line
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        json: Transaction
+    };
+
+    request(Blockchain, (error, res, body) => {
+        if (error)
+        {
+            response.render('receive', {
+                Directory: "Verify Receival", // eslint-disable-line
+                Status: null,
+                Error: error
+            });
+        }
+        else
+        {
+            let status = body;
+
+            if (error || status.error)
+            {
+                response.render('receive', {
+                    Directory: "Verify Receival", // eslint-disable-line
+                    Status: null,
+                    Error: JSON.stringify(status.error)
+                });
+            }
+            else
+            {
+                response.render('receive', {
+                    Directory: "Verify Receival", // eslint-disable-line
+                    Status: "Request Verified",
+                    Error: null
+                });
+            }
+        }
+    });
+});
 //<------------------------------->
 module.exports = ROUTER;
