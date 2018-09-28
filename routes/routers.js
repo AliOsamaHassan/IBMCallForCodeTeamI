@@ -108,23 +108,19 @@ ROUTER.post('/report', (req, response, next) => { // eslint-disable-line
         }
     });
 
-    let Supplies = ["BLOOD", "MEDS", "FOOD"]; // eslint-disable-line
-
-    let supply = Supplies[(parseInt(Math.random() * 3)) % 3];
-
-    let TransactionID = parseInt((Math.random() * 1000));
+    let TransactionID = parseInt((Math.random() * 100000));
 
     let Transaction = {
         "$class": "net.biz.disasterSampleNetwork.CreateDisaster", // eslint-disable-line
+        "Id": String(form.Country) + "_" + TransactionID, // eslint-disable-line
         "location": String(form.Country), // eslint-disable-line
-        "Id": TransactionID, // eslint-disable-line
-        "suppliesType":  supply // eslint-disable-line
+        "disasterType": String(form.Disaster), // eslint-disable-line
     };
 
     LOGGER.log(Transaction);
 
     let Blockchain = {
-        uri: 'https://disaster-network-rest.eu-gb.mybluemix.net/api/CreateDisaster',
+        uri: 'https://disaster-rest-forgiving-hippopotamus.eu-gb.mybluemix.net/api/CreateDisaster',
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -166,6 +162,9 @@ ROUTER.get('/inquire', (req, response, next) => { // eslint-disable-line
             Latitude: null,
             Disaster: null,
             ID: null,
+            Date: null,
+            Time: null,
+            Status: null,
             Revision: null,
             error: null // eslint-disable-line
         });
@@ -192,6 +191,9 @@ ROUTER.get('/inquire', (req, response, next) => { // eslint-disable-line
                     Latitude: null,
                     Disaster: null,
                     ID: null,
+                    Date: null,
+                    Time: null,
+                    Status: null,
                     Revision: null,
                     error: "Error: " + error // eslint-disable-line
                 });
@@ -208,6 +210,9 @@ ROUTER.get('/inquire', (req, response, next) => { // eslint-disable-line
                         Latitude: null,
                         Disaster: null,
                         ID: null,
+                        Date: null,
+                        Time: null,
+                        Status: null,
                         Revision: null,
                         error: "Error: " + error // eslint-disable-line
                     });
@@ -220,6 +225,9 @@ ROUTER.get('/inquire', (req, response, next) => { // eslint-disable-line
                         Latitude: status.Latitude,
                         Disaster: status.Disaster,
                         ID: status._id,
+                        Date: status.Date,
+                        Time: status.Time,
+                        Status: status.Status,
                         Revision: status._rev,
                         error: null // eslint-disable-line
                     });
@@ -260,9 +268,6 @@ ROUTER.put('/update', (req, response, next) => { // eslint-disable-line
     let currDate = DNT.format(now, 'YYYY/MM/DD');
     let currTime = DNT.format(now, 'hh:mm A [GMT]Z');
 
-    form.Date = currDate;
-    form.Time = currTime;
-
     let requestURL = `https://${username}:${password}@3d878a23-6ab2-467d-b2b4-9132c92052d2-bluemix.cloudant.com/test_dir_1/` + requestID;
 
     // Promise used to return Revision ID
@@ -283,20 +288,29 @@ ROUTER.put('/update', (req, response, next) => { // eslint-disable-line
                 if (status.error != undefined) {
                     reject('Error: ' + error);
                 } else {
-                    resolve(status._rev);
+                    resolve(status);
                 }
             }
         });
     });
 
-    getRevision.then((Revision) => {
+    getRevision.then((Incident) => {
+
+        let revisionID = Incident._rev;
+
+        Incident.Date = currDate;
+        Incident.Time = currTime;
+        Incident.Status = form.Status;
+
+        LOGGER.log(Incident.status);
+
         let options = {
             method: "PUT", // eslint-disable-line
             headers: {
                 "Content-Type": "application/json" // eslint-disable-line
             }, // eslint-disable-line
-            json: form,
-            url: requestURL + `?rev=${Revision}` // eslint-disable-line
+            json: Incident,
+            url: requestURL + `?rev=${revisionID}` // eslint-disable-line
         };
 
         request(options, (error, res, body) => {
@@ -444,4 +458,68 @@ ROUTER.delete('/remove', (req, response, next) => { // eslint-disable-line
 });
 //<------------------------------->
 
+//<---------Send Supplies--------->
+ROUTER.get('/send', (req, response, next) => {
+    response.render('send', {
+        Directory: "Send Supplies",
+        Status: null,
+        Error: null
+    });
+});
+
+ROUTER.post('/send', (req, response, next) => {
+    LOGGER.log('HERE');
+    let form = req.body;
+    let Transaction = {
+        "$class": "net.biz.disasterSampleNetwork.SendSupply",
+        "supply": form.supply,
+        "receiver": form.receiver,
+        "deviceId": form.deviceId,
+        "route": form.route,
+        "amount": form.amount,
+    };
+
+    let Blockchain = {
+        uri: 'https://disaster-rest-forgiving-hippopotamus.eu-gb.mybluemix.net/api/SendSupply',
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        json: Transaction
+    };
+
+    request(Blockchain, (error, res, body) => {
+
+        if (error) {
+            response.render('send', {
+                Directory: "Send Supplies",
+                Status: null,
+                Error: error
+            });
+        } else {
+            let status = body;
+
+            if (error || status.error) {
+                response.render('send', {
+                    Directory: "Send Supplies",
+                    Status: null,
+                    Error: JSON.stringify(status.error)
+                });
+            } else {
+                response.render('send', {
+                    Directory: "Send Supplies",
+                    Status: "Request Completed",
+                    Error: null
+                });
+            }
+        }
+
+    });
+});
+//<------------------------------->
+
+//<---------Receive Supplies--------->
+
+//<------------------------------->
 module.exports = ROUTER;

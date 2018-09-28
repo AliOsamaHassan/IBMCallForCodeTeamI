@@ -3,7 +3,7 @@
 
 <head>
     <% include partials/head %>
-    
+
     <style type="text/css">
         #map {
             width: 700px;
@@ -16,89 +16,119 @@
 </head>
 
 <body>
-    <h1>Survival Network</h1>
-    <p id="paragragh">Incident Report</p>
 
-    <div class="container">
-        <fieldset>
-            <form action="/report" method="post">
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Country</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Country" type="text" class="country" placeholder="Enter Country" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">City</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="City" type="text" class="city" placeholder="Enter a City" required>
-                    </div>
-                </div>
+    <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+        <a class="navbar-brand" href="#">Survival Network</a>
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
 
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Map</label>
-                    </div>
-                    <div class="col-75" id="map"></div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Longitude</label>
-                    </div>
-                    <div class="col-75">
-                        <input id="lng" name="Longitude" type="text" class="longitude" readonly="yes" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Latitude</label>
-                    </div>
-                    <div class="col-75">
-                        <input id="lat" name="Latitude" type="text" class="latitude" readonly="yes" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-25">
-                        <label for="fname">Disaster</label>
-                    </div>
-                    <div class="col-75">
-                        <input name="Disaster" type="text" class="disaster" placeholder="Enter Disaster Type" required>
-                    </div>
-                </div>
-                <div class="row">
-                    <input type="submit" class="submit" value="Report Incident">
-                </div>
-            </form>
-        </fieldset>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Dashboard</a>
+            </li>
 
-        <% if(requestID !== null){ %>
-        <p id="result"> Status:
-            <span style="color: green">
-                <%= requestStatus %></span>
-        </p>
-        <p> Report ID:
-            <span style="color: slateblue">
-                <%= requestID %></span>
-        </p>
-        <p> Revision:
-            <span style="color: slateblue">
-                <%= revision %></span>
-        </p>
-        <% } %>
+            <li class="nav-item dropdown active">
+                <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    Incident Control Panel
+                </a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item highlight" href="/report">Report an Incident</a>
+                    <a class="dropdown-item" href="/inquire">Inquire about an Incident</a>
+                    <a class="dropdown-item" href="/update">Update an Incident</a>
+                    <a class="dropdown-item" href="/remove">Delete an Incident</a>
+                    <a class="dropdown-item" href="/send">Send Supplies</a>
+                    <a class="dropdown-item" href="/recieve">Verify Recieval of Supplies</a>
+                </div>
+            </li>
 
-        <% if(error !== null){ %>
-        <p>
-            <%= error %>
-        </p>
-        <% } %>
+            <li class="nav-item">
+                <a class="nav-link" href="#">About Us</a>
+            </li>
+        </ul>
+    </nav>
 
-        <p>&copy; 2018 Survival Network <p></p>
+    <div class="row" style="margin-top: 10px">
+        <div class="container">
+            <fieldset>
+                <form action="/report" method="post" class="form-horizontal">
+
+                    <div class="form-group">
+                        <label for="Country">Country: </label>
+                        <input name="Country" type="text" class="form-control" placeholder="Enter Country" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="City">City: </label>
+                        <input name="City" type="text" class="form-control" placeholder="Enter a City" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Disaster">Disaster: </label>
+
+                        <select class="form-control" name="Disaster" id="Disaster" required>
+                            <option>flood</option>
+                            <option>earthquake</option>
+                            <option>tsunami</option>
+                            <option>volcanicEruption </option>
+                        </select>
+
+                        <!--<input name="Disaster" type="text" class="form-control" placeholder="Enter Disaster Type"
+                            required>-->
+                    </div>
+                    <div class="form-group border">
+                        <label for="Map">Map: </label>
+                        <div id="map"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Longitude">Longitude: </label>
+                        <input id="lng" name="Longitude" type="text" class="form-control" readonly="yes" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Latitude">Latitude: </label>
+                        <input id="lat" name="Latitude" type="text" class="form-control" readonly="yes" required>
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </div>
+                </form>
+            </fieldset>
+        </div>
     </div>
+
+    <% if(requestID !== null){ %>
+    <div class="container" style="text-align: left">
+        <div class="row border" style="margin-top: 10px">
+
+            <div class="col">
+                <h6>Status: <small style="color: green">
+                        <%= requestStatus %> </small> </h6>
+            </div>
+
+            <div class="col">
+                <h6>Report ID: <small style="color: slateblue">
+                        <%= requestID %> </small></h6>
+            </div>
+            <div class="col">
+                <h6>Revision: <small style="color: slateblue">
+                        <%= revision %> </small></h6>
+            </div>
+
+        </div>
+    </div>
+    <% } %>
+
+    <% if(error !== null){ %>
+    <div class="container" style="text-align: center">
+        <div class="row border" style="margin-top: 10px">
+
+            <h6>Something Went Wrong: <small style="color: red">
+                    <%= error %> </small></h6>
+        </div>
+    </div>
+    <% } %>
+
+    <% include partials/foot %>
 </body>
 
 </html>
