@@ -18,5 +18,5 @@ At crisis (Natural Disasters), victims are in state of panic. It takes too much 
 
 ## Solution diagram:
 ...
-![Solution diagram](https://drive.google.com/file/d/1qa2TyViNDY5_KRtcpsshIvohiY0dyRDX/view)
+![Solution diagram](diagram (1).png)
 ...
