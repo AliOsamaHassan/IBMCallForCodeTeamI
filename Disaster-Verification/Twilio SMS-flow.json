@@ -1,0 +1,182 @@
+[
+    {
+        "id": "83344b46.f6ade8",
+        "type": "tab",
+        "label": "Twilio SMS",
+        "disabled": false,
+        "info": "This Flow simply enables vicitims & bystanders to report disasters by communicating \nwith our chatbot via SMS. Our system uses Twilio services to enable anyone to \nsend SOS requests to our web-based service without an internet connection."
+    },
+    {
+        "id": "2f1df918.45a096",
+        "type": "debug",
+        "z": "83344b46.f6ade8",
+        "name": "Request Received",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 330,
+        "y": 50,
+        "wires": []
+    },
+    {
+        "id": "4e946cbe.b73964",
+        "type": "http in",
+        "z": "83344b46.f6ade8",
+        "name": "",
+        "url": "/twiliosms",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 90,
+        "y": 50,
+        "wires": [
+            [
+                "2f1df918.45a096",
+                "bf0423c2.fb797"
+            ]
+        ]
+    },
+    {
+        "id": "bf0423c2.fb797",
+        "type": "function",
+        "z": "83344b46.f6ade8",
+        "name": "ReceivedDate",
+        "func": "d = new Date();\n\nmsg.payload.ReceivedDate = d.valueOf();\nmsg.payload.ReceivedDateStr = d.toString();\n\nreturn msg;\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 190,
+        "y": 100,
+        "wires": [
+            [
+                "6126380d.6a27e8"
+            ]
+        ]
+    },
+    {
+        "id": "6126380d.6a27e8",
+        "type": "function",
+        "z": "83344b46.f6ade8",
+        "name": "Prepare Request for Conversation",
+        "func": "msg.params = {};\nmsg.params.context = {}\nif (flow.get(msg.payload.From)){\n msg.params.context = flow.get(msg.payload.From); \n}\n\n\nflow.set ('From', msg.payload.From);\n\nmsg.payload = msg.payload.Body;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 350,
+        "y": 150,
+        "wires": [
+            [
+                "89ff192.fd24ee8",
+                "a0d0060a.a37d48"
+            ]
+        ]
+    },
+    {
+        "id": "89ff192.fd24ee8",
+        "type": "debug",
+        "z": "83344b46.f6ade8",
+        "name": "Conversation Request",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 700,
+        "y": 150,
+        "wires": []
+    },
+    {
+        "id": "a0d0060a.a37d48",
+        "type": "watson-conversation-v1",
+        "z": "83344b46.f6ade8",
+        "name": "Chatbot",
+        "workspaceid": "039f9799-3668-4b18-9788-31752cdaca8d",
+        "multiuser": false,
+        "context": false,
+        "empty-payload": false,
+        "default-endpoint": false,
+        "service-endpoint": "",
+        "timeout": "",
+        "optout-learning": false,
+        "x": 470,
+        "y": 200,
+        "wires": [
+            [
+                "ef1de3bd.4a0d7",
+                "3ce7fde1.8aff02"
+            ]
+        ]
+    },
+    {
+        "id": "ef1de3bd.4a0d7",
+        "type": "function",
+        "z": "83344b46.f6ade8",
+        "name": "Output Text and Context",
+        "func": "var From = flow.get('From');\nmsg.topic = From;\nflow.set(From, msg.payload.context);\n\nmsg.payload = msg.payload.output.text.join();\n\nif (!msg.payload) {\n msg.payload = \"Something went wrong.\";\n flow.set(From, {});\n}\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 600,
+        "y": 250,
+        "wires": [
+            [
+                "5dbb1420.b1e18c",
+                "3ac9e63d.7651ca",
+                "eba4d021.e9d56"
+            ]
+        ]
+    },
+    {
+        "id": "3ce7fde1.8aff02",
+        "type": "debug",
+        "z": "83344b46.f6ade8",
+        "name": "Conversation msg",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 700,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "5dbb1420.b1e18c",
+        "type": "twilio out",
+        "z": "83344b46.f6ade8",
+        "service": "_ext_",
+        "twilio": "6e922530.24c3ac",
+        "from": "",
+        "number": "",
+        "name": "",
+        "x": 710,
+        "y": 310,
+        "wires": []
+    },
+    {
+        "id": "3ac9e63d.7651ca",
+        "type": "debug",
+        "z": "83344b46.f6ade8",
+        "name": "msg.payload",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 860,
+        "y": 250,
+        "wires": []
+    },
+    {
+        "id": "eba4d021.e9d56",
+        "type": "http response",
+        "z": "83344b46.f6ade8",
+        "name": "Respond to original GET",
+        "statusCode": "",
+        "headers": {},
+        "x": 720,
+        "y": 350,
+        "wires": []
+    },
+    {
+        "id": "6e922530.24c3ac",
+        "type": "twilio-api",
+        "z": "",
+        "sid": "AC82360bb2a4e2f3d226432e3763ddfea4",
+        "from": "+1 949 267 3863",
+        "name": ""
+    }
+]

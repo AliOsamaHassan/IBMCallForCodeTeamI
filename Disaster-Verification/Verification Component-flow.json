@@ -1,0 +1,321 @@
+[
+    {
+        "id": "5ae54f24.08428",
+        "type": "tab",
+        "label": "Verify Requets",
+        "disabled": false,
+        "info": "This flow is responsible for verifying the received requests from the chatbot \r\n(Victims & bystanders).\r\n\r\n1st Sub flow:\r\n\r\nAfter victims or/and bystanders request help through the chatbot, these requests\r\nare stored in a Cloudant database. This flow imports requests from the database \r\nperiodically (1 minute) and filter them. The filtration process is threshold-based. \r\nIf the chatbot receives more than 10 requests with the same disaster from the \r\nsame city, one request is sent to the blockchain network to fire a transaction \r\nso NGOs can help them with.\r\n\r\n2nd Sub flow:\r\n\r\nAfter Sending request to the blockchain network, the flow transfer the verified\r\nrequests from the Chatbot Database to another database \"Verified Requests Database\"\r\nto avoid repetition.\r\n"
+    },
+    {
+        "id": "9e98d71a.4f9698",
+        "type": "cloudant in",
+        "z": "5ae54f24.08428",
+        "name": "Import from Chatbot Database",
+        "cloudant": "75c1f7a3.e41ac8",
+        "database": "disaster-reports-db",
+        "service": "_ext_",
+        "search": "_all_",
+        "design": "",
+        "index": "",
+        "x": 280,
+        "y": 100,
+        "wires": [
+            [
+                "4ec6e0b0.1e3d8",
+                "19414c65.9b5054"
+            ]
+        ]
+    },
+    {
+        "id": "45afb8ec.453488",
+        "type": "inject",
+        "z": "5ae54f24.08428",
+        "name": "Query for help requets",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "60",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "x": 141,
+        "y": 29.000006675720215,
+        "wires": [
+            [
+                "9e98d71a.4f9698"
+            ]
+        ]
+    },
+    {
+        "id": "4ec6e0b0.1e3d8",
+        "type": "function",
+        "z": "5ae54f24.08428",
+        "name": "Filter Requests",
+        "func": "// export cities from the requests\n\nvar requests = msg.payload ;\nvar cities = [] ;\nvar current_city = null ;\nvar counter = 0;\nfor (var i = 0; i < requests.length; i++) {\n    cities[i] = requests[i].City;\n}\n\n//find out which city have the most requests\n\ncities.sort();\ncounter = 0;\nvar current = null;\nvar RequestPerCity = [] ;\nvar j = 0;\nfor (var i = 0; i < cities.length; i++) {\n    if (cities[i] != current) {\n        if (counter > 0) {\n            RequestPerCity[j] = { \"City\": current, \"requests\": counter};\n            j++;\n        }\n        current = cities[i];\n        counter = 1;\n    } else {\n        counter++;\n\t\t}\n}\nif (counter > 0) {\n    \n    RequestPerCity[j] = { \"City\": current, \"requests\": counter};\n            j++;\n}\n\n// send verified requests to middleware \n\nvar threshold = 5; // threshold for verifing requests \nvar crisis_loc = [];\ncounter = 0;\nfor (var i = 0; i < RequestPerCity.length; i++) {\n    if(RequestPerCity[i].requests >= threshold){\n        crisis_loc[counter] = RequestPerCity[i].City ;\n        counter++;\n        \n    }    \n}\n\n\nvar result = [];\ncounter = 0;\nvar index ;\nfor(var i = 0; i < crisis_loc.length; i++){\n    index = i;\n    for(var j = 0; j < requests.length; j++){\n        \n        if(requests[j].City == crisis_loc[index]){\n\t\t\tresult[counter] = requests[j];\n\t\t\tcounter++;\n        }       \n    }\n}\n\nvar returnJson = {\"location\" : result[0].City,\n\"Id\": \"Victim_\" + result[0].DisasterType + \"_\" + result[0].City};\n   \nmsg.payload = returnJson;\nreturn msg ;\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 300,
+        "y": 160,
+        "wires": [
+            [
+                "961980ad.d7ffe",
+                "bf3a880a.690118"
+            ]
+        ]
+    },
+    {
+        "id": "961980ad.d7ffe",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "Get Verified Requests",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 560,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "19414c65.9b5054",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "Retrieved All Requests",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "x": 570,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "bf3a880a.690118",
+        "type": "http request",
+        "z": "5ae54f24.08428",
+        "name": "Send Verifed Request to Blockchain Network",
+        "method": "POST",
+        "ret": "obj",
+        "url": "https://disaster-rest-forgiving-hippopotamus.eu-gb.mybluemix.net/api/CreateDisaster",
+        "tls": "",
+        "x": 470,
+        "y": 220,
+        "wires": [
+            [
+                "d2a6912d.4dc14",
+                "b3a4d4a4.65c8f8"
+            ]
+        ]
+    },
+    {
+        "id": "f3e6466a.5ce438",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "Get Verified Requests Only",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 480,
+        "y": 370,
+        "wires": []
+    },
+    {
+        "id": "604220b.71edae",
+        "type": "cloudant out",
+        "z": "5ae54f24.08428",
+        "name": "Store Verified Requets in Requests Database",
+        "cloudant": "f0dfb6c2.1bfb48",
+        "database": "verified",
+        "service": "_ext_",
+        "payonly": true,
+        "operation": "insert",
+        "x": 610,
+        "y": 440,
+        "wires": []
+    },
+    {
+        "id": "be22be5d.41d1c",
+        "type": "function",
+        "z": "5ae54f24.08428",
+        "name": "Filter Requests & Store ",
+        "func": "// export cities from the requests\n\nvar requests = msg.payload ;\nvar cities = [] ;\nvar current_city = null ;\nvar counter = 0;\nfor (var i = 0; i < requests.length; i++) {\n    cities[i] = requests[i].City;\n}\n\n//find out which city have the most requests\n\ncities.sort();\ncounter = 0;\nvar current = null;\nvar RequestPerCity = [] ;\nvar j = 0;\nfor (var i = 0; i < cities.length; i++) {\n    if (cities[i] != current) {\n        if (counter > 0) {\n            RequestPerCity[j] = { \"City\": current, \"requests\": counter};\n            j++;\n        }\n        current = cities[i];\n        counter = 1;\n    } else {\n        counter++;\n\t\t}\n}\nif (counter > 0) {\n    \n    RequestPerCity[j] = { \"City\": current, \"requests\": counter};\n            j++;\n}\n\n// send verified requests to middleware \n\nvar threshold = 5; // threshold for verifing requests\nvar crisis_loc = [];\ncounter = 0;\nfor (var i = 0; i < RequestPerCity.length; i++) {\n    if(RequestPerCity[i].requests >= threshold){\n        crisis_loc[counter] = RequestPerCity[i].City ;\n        counter++;\n        \n    }    \n}\n\nvar verified_requests = [];\ncounter = 0;\nvar index ;\nfor(var i = 0; i < crisis_loc.length; i++){\n    index = i;\n    for(var j = 0; j < requests.length; j++){\n        \n        if(requests[j].City == crisis_loc[index]){\n\t\t\tverified_requests[counter] = requests[j];\n\t\t\tcounter++;\n        }       \n    }\n}\nvar returnValue = {\"Request ID\" :\"Victim_\" + verified_requests[0].DisasterType + \"_\" + verified_requests[0].City , verified_requests };\n\nmsg.payload = returnValue;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 260,
+        "y": 440,
+        "wires": [
+            [
+                "f3e6466a.5ce438",
+                "604220b.71edae",
+                "e59d3945.5c5e68"
+            ]
+        ]
+    },
+    {
+        "id": "d2a6912d.4dc14",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "Blockchain Network Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "x": 810,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "3d773176.d1804e",
+        "type": "cloudant out",
+        "z": "5ae54f24.08428",
+        "name": "Remove Verified Requests from Chatbot Database",
+        "cloudant": "75c1f7a3.e41ac8",
+        "database": "disaster-reports-db",
+        "service": "_ext_",
+        "payonly": false,
+        "operation": "delete",
+        "x": 720,
+        "y": 670,
+        "wires": []
+    },
+    {
+        "id": "44281e1.8d16ee",
+        "type": "split",
+        "z": "5ae54f24.08428",
+        "name": "split out individual Requests",
+        "splt": "\\n",
+        "spltType": "str",
+        "arraySplt": "1",
+        "arraySpltType": "len",
+        "stream": false,
+        "addname": "",
+        "x": 460,
+        "y": 550,
+        "wires": [
+            [
+                "3b1ce9b4.a960c6"
+            ]
+        ]
+    },
+    {
+        "id": "7345a4b3.a7613c",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "id and rev to delete",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 760,
+        "y": 610,
+        "wires": []
+    },
+    {
+        "id": "3b1ce9b4.a960c6",
+        "type": "function",
+        "z": "5ae54f24.08428",
+        "name": "Extract id and rev",
+        "func": "\nvar document = {_id: msg.payload._id, _rev: msg.payload._rev};\n\nmsg.payload = document;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 510,
+        "y": 610,
+        "wires": [
+            [
+                "7345a4b3.a7613c",
+                "3d773176.d1804e"
+            ]
+        ]
+    },
+    {
+        "id": "e59d3945.5c5e68",
+        "type": "function",
+        "z": "5ae54f24.08428",
+        "name": "Extract Requests",
+        "func": "var arr = msg.payload.verified_requests;\nmsg.payload = arr;\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 500,
+        "wires": [
+            [
+                "f1189a74.8bc808",
+                "44281e1.8d16ee"
+            ]
+        ]
+    },
+    {
+        "id": "f1189a74.8bc808",
+        "type": "debug",
+        "z": "5ae54f24.08428",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 560,
+        "y": 500,
+        "wires": []
+    },
+    {
+        "id": "817ccfb1.0fc6c",
+        "type": "cloudant in",
+        "z": "5ae54f24.08428",
+        "name": "Import from Chatbot Database",
+        "cloudant": "75c1f7a3.e41ac8",
+        "database": "disaster-reports-db",
+        "service": "_ext_",
+        "search": "_all_",
+        "design": "",
+        "index": "",
+        "x": 170,
+        "y": 370,
+        "wires": [
+            [
+                "be22be5d.41d1c"
+            ]
+        ]
+    },
+    {
+        "id": "b3a4d4a4.65c8f8",
+        "type": "switch",
+        "z": "5ae54f24.08428",
+        "name": "Proceed if No Error Occurs",
+        "property": "payload.error",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "null"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 1,
+        "x": 460,
+        "y": 290,
+        "wires": [
+            [
+                "817ccfb1.0fc6c"
+            ]
+        ]
+    },
+    {
+        "id": "75c1f7a3.e41ac8",
+        "type": "cloudant",
+        "z": "",
+        "host": "38e463fa-20a8-4b83-b5ee-0f8e7e3a5a2e-bluemix.cloudant.com",
+        "name": "Chatbot Requests"
+    },
+    {
+        "id": "f0dfb6c2.1bfb48",
+        "type": "cloudant",
+        "z": "",
+        "host": "94f85d11-d727-4aad-9db2-c381bb301a5b-bluemix.cloudant.com",
+        "name": "Verified Requests"
+    }
+]
