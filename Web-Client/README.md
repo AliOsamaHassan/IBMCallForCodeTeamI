@@ -7,4 +7,4 @@ This web application is used by organizations and trusted participants within a 
 NodeJS is used as to run the service, as it offers high versatility with the NPM modules offering rapid tool to help development of the application such as: expressJS Framework for HTTP requests, and requestJS offering easy ability to call RESTful APIs. Embeded Java Script is used to make the pages reactive to JSON files coming from the request Responses.
 
 - ### Application Diagram
-![](Web App.png)
+![alft](Web App.png)
