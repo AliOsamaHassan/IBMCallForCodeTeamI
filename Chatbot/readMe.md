@@ -1,15 +1,15 @@
-Survival Network Chatbot
+# Survival Network Chatbot
 
-
+- ### Intro
 Natural disasters have devastating consequences for the cities that suffer them .Where the least damage that could occur that Many victims are lost or left homeless and without health care .
 During a disaster, affected residents need a single portal to obtain  basic information that will enable them to take advantage of available services , as will as to get updated with latest news.
 
-Survival Network Chatbot: a Cognitive Chatbot that uses different conversational AI technologies to provide support to affected residents and  automatically answer questions posed by people in natural human language. By combining several cognitive capabilities such as natural language understanding, natural language processing, machine learning, speech to text , tone analyzer.
+- ### Survival Network Chatbot: a Cognitive Chatbot that uses different conversational AI technologies to provide support to affected residents and  automatically answer questions posed by people in natural human language. By combining several cognitive capabilities such as natural language understanding, natural language processing, machine learning, speech to text , tone analyzer.
 
 
 url : https://survival-network-chatbot.eu-gb.mybluemix.net/
 
-Tools & Services used: 
+- ### Tools & Services used: 
 
 Watson Assisstant (formerly Conversation)
 
@@ -26,6 +26,14 @@ Node-Red
 Cloud Foundary
 
 IBM SDK for Node.js
-updated
+
 Continuous Delivery Toolchain
+
+
+- ### Node-Red-Flow
+![alt text](https://raw.githubusercontent.com/ansgohar/IBMCallForCodeTeamI/master/Chatbot/conversation-flow/1.PNG)
+
+![alt text](https://raw.githubusercontent.com/ansgohar/IBMCallForCodeTeamI/master/Chatbot/conversation-flow/2.PNG)
+
+![alt text](https://raw.githubusercontent.com/ansgohar/IBMCallForCodeTeamI/master/Chatbot/conversation-flow/3.PNG)
 
