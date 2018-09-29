@@ -7,14 +7,20 @@ At crisis (Natural Disasters), victims are in state of panic. It takes too much 
 
 ### IBM Cloud™ services used :
 * Node-RED Starter kit 
-* Watson Assistant 
+* Watson Assistant (formerly Conversation)
 * Speech to text 
 * Tone Analyzer 
 * Internet of things 
 * Cloudant 
-* SDK for Node.js 
-*Blockchain 
-*Discovery
+* IBM SDK for Node.js 
+* IBM Blockchain Platform 
+* Watson Discovery
+* Cloud Foundary
+* Weather Company Data
+* Continuous Delivery Toolchain
+ 
+
+
 
 ## Solution diagram:
 ![Solution diagram](diagram.png)
