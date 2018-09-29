@@ -56,7 +56,7 @@ Continuous Delivery Toolchain
 
 
 
-- ### [Integrate Watson Assistant and Telegram using Node-RED](https://developer.ibm.com/africa/skills/innovator-integrate-watson-assistant-and-telegram-using-node-red/
+- ### [Integrate Watson Assistant and Telegram using Node-RED](https://developer.ibm.com/africa/skills/innovator-integrate-watson-assistant-and-telegram-using-node-red/)
 
 
 - ### [Discover IBM Watson Services](https://developer.ibm.com/africa/skills/innovator-discover-watson-services/)
@@ -66,12 +66,6 @@ Continuous Delivery Toolchain
 - ### [Watson Node-RED Services Basic Example Labs](https://github.com/watson-developer-cloud/node-red-labs/tree/master/basic_examples)
 
 
-
-
-
-
-
--
 
 
 
