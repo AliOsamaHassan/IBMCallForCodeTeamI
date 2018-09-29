@@ -39,3 +39,39 @@ Continuous Delivery Toolchain
 - ### Node-Red-Flow(3)
 ![alt text](https://raw.githubusercontent.com/ansgohar/IBMCallForCodeTeamI/master/Chatbot/conversation-flow/3.PNG)
 
+
+# Learning Path
+
+- ### [Getting Started with IBM Cloud](https://developer.ibm.com/africa/skills/innovator-getting-started-with-ibm-cloud/)
+
+
+
+- ### [Build your First IoT Application: Node-RED: Basics to Bots](https://developer.ibm.com/africa/skills/innovator-node-red-basics-to-bots/)  
+
+
+- ### [Build a Notification System for your IoT Application](https://developer.ibm.com/africa/skills/innovator-build-notification-system-iot-application/)
+
+
+- ### [Build your Own Chatbot](https://developer.ibm.com/africa/skills/innovator-chatbot-for-good/)
+
+
+
+- ### [Integrate Watson Assistant and Telegram using Node-RED](https://developer.ibm.com/africa/skills/innovator-integrate-watson-assistant-and-telegram-using-node-red/
+
+
+- ### [Discover IBM Watson Services](https://developer.ibm.com/africa/skills/innovator-discover-watson-services/)
+
+
+
+- ### [Watson Node-RED Services Basic Example Labs](https://github.com/watson-developer-cloud/node-red-labs/tree/master/basic_examples)
+
+
+
+
+
+
+
+-
+
+
+
