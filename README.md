@@ -24,7 +24,7 @@ At crisis (Natural Disasters), victims are in state of panic. It takes too much 
 
 
 ## Architecture Diagram:
-![Architecture Diagram](architecture diagram .png)
+![Architecture Diagram](architecture_diagram.png)
 
 ## Road map diagram:
 ![Road map diagram](road_map_diagram.png)
