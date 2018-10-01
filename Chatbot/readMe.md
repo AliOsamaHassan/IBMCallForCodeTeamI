@@ -11,25 +11,25 @@ url : https://survival-network-chatbot.eu-gb.mybluemix.net/
 
 - ### Tools & Services used: 
 
-Watson Assisstant (formerly Conversation)
+1- Watson Assisstant (formerly Conversation)
 
-Speech-to-Text
+2- Speech-to-Text
 
-Tone Analyzer
+3- Tone Analyzer
 
-Watson Discovery
+4- Watson Discovery
 
-Weather Company Data
+5- Weather Company Data
 
-Node-Red
+6- Node-Red
 
-Cloud Foundary
+7- Cloud Foundary
 
-IBM SDK for Node.js
+8- IBM SDK for Node.js
 
-Continuous Delivery Toolchain
+9- Continuous Delivery Toolchain
 
-Cloudant
+10- Cloudant
 
 
 - ### Node-Red-Flow(1)
